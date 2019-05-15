@@ -1,2 +1,2 @@
 # HHScraper
-.NET Library to scrape Thumbnails and Videos from Hentai Haven
+.NET Library to scrape Thumbnails, Descriptions and Videos from Hentai Haven
