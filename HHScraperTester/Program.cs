@@ -31,7 +31,9 @@ namespace HHScraperTester
                 {
                     try
                     {
-                        Thread.Sleep(rnd.Next(4000, 10000));
+                        int waitTime = rnd.Next(4000, 10000);
+                        Console.WriteLine("Artifical wait: " + waitTime);
+                        Thread.Sleep(waitTime);
                         System.IO.Directory.CreateDirectory("hh/" + directorySeriesName);
                         Console.WriteLine("===== " + series + " =====");
                         System.IO.File.WriteAllText("hh/" + directorySeriesName + "/links.txt", "https://hentaihaven.org/series/" + series);
@@ -41,21 +43,25 @@ namespace HHScraperTester
                     }
                     catch (Exception) { }
                     int epiCounter = 1;
-                    foreach (var episode in hhs.GetEpisodeListFromSeries(series))
+
+                    try
                     {
-                        try
+                        foreach (var episode in hhs.GetEpisodeListFromSeries(series))
                         {
-                            Thread.Sleep(rnd.Next(4000, 10000));
+                            int waitTime = rnd.Next(4000, 10000);
+                            Console.WriteLine("Artifical wait: " + waitTime);
+                            Thread.Sleep(waitTime);
                             string episodeThumbnail = hhs.GetThumbnail(episode);
                             System.IO.File.AppendAllText("hh/" + directorySeriesName + "/links.txt", System.Environment.NewLine + "thumbnail: " + episodeThumbnail);
                             string directVideo = hhs.GetHHDirectVideoURL(episode);
                             System.IO.File.AppendAllText("hh/" + directorySeriesName + "/links.txt", System.Environment.NewLine + "video: " + directVideo);
                             Console.WriteLine(epiCounter + ". " + directVideo);
                             epiCounter++;
-                        }
-                        catch (Exception) { }
                         
+                        
+                        }
                     }
+                    catch (Exception) { }
                 }
                 
             }
