@@ -21,38 +21,43 @@ namespace HHScraperTester
         private static Random rnd = new Random();
         static void Main(string[] args)
         {
+            
             HentaiHavenScraper hhs = new HentaiHavenScraper();
-
             string[] seriesNames = System.IO.File.ReadAllLines("series.txt");
-            //System.IO.File.WriteAllLines("series.txt", seriesNames);
-
-
             foreach(string series in seriesNames)
             {
                 string directorySeriesName = series.Replace(":", string.Empty);
-                Thread.Sleep(5000);
-
-
-                System.IO.Directory.CreateDirectory("hh/" + directorySeriesName);
-
-
-                Console.WriteLine("===== " + series + " =====");
-                System.IO.File.WriteAllText("hh/" + directorySeriesName + "/links.txt", "https://hentaihaven.org/series/" + series);
-
-                string seriesDescription = hhs.GetSeriesDescription(series);
-                System.IO.File.WriteAllText("hh/" + directorySeriesName + "/desc.txt", seriesDescription);
-
-                int epiCounter = 1;
-                foreach(var episode in hhs.GetEpisodeListFromSeries(series))
+                if (!System.IO.Directory.Exists("hh/" + directorySeriesName))
                 {
-                    Thread.Sleep(2000);
-                    string episodeThumbnail = hhs.GetThumbnail(episode);
-                    System.IO.File.AppendAllText("hh/" + directorySeriesName + "/links.txt", System.Environment.NewLine + "thumbnail: " + episodeThumbnail);
-                    string directVideo = hhs.GetHHDirectVideoURL(episode);
-                    System.IO.File.AppendAllText("hh/" + directorySeriesName + "/links.txt", System.Environment.NewLine + "video: " + directVideo);
-                    Console.WriteLine(epiCounter + ". " + directVideo);
-                    epiCounter++;
+                    try
+                    {
+                        Thread.Sleep(rnd.Next(4000, 10000));
+                        System.IO.Directory.CreateDirectory("hh/" + directorySeriesName);
+                        Console.WriteLine("===== " + series + " =====");
+                        System.IO.File.WriteAllText("hh/" + directorySeriesName + "/links.txt", "https://hentaihaven.org/series/" + series);
+                        string seriesDescription = hhs.GetSeriesDescription(series);
+                        System.IO.File.WriteAllText("hh/" + directorySeriesName + "/desc.txt", seriesDescription);
+
+                    }
+                    catch (Exception) { }
+                    int epiCounter = 1;
+                    foreach (var episode in hhs.GetEpisodeListFromSeries(series))
+                    {
+                        try
+                        {
+                            Thread.Sleep(rnd.Next(4000, 10000));
+                            string episodeThumbnail = hhs.GetThumbnail(episode);
+                            System.IO.File.AppendAllText("hh/" + directorySeriesName + "/links.txt", System.Environment.NewLine + "thumbnail: " + episodeThumbnail);
+                            string directVideo = hhs.GetHHDirectVideoURL(episode);
+                            System.IO.File.AppendAllText("hh/" + directorySeriesName + "/links.txt", System.Environment.NewLine + "video: " + directVideo);
+                            Console.WriteLine(epiCounter + ". " + directVideo);
+                            epiCounter++;
+                        }
+                        catch (Exception) { }
+                        
+                    }
                 }
+                
             }
 
             Console.ReadLine();
