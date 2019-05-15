@@ -62,6 +62,7 @@ namespace HHScraperTester
                         }
                     }
                     catch (Exception) { }
+                    Console.Clear();
                 }
                 
             }
