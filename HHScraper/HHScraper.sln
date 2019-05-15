@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHScraper", "HHScraper.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHScraperTester", "..\HHScraperTester\HHScraperTester.csproj", "{F3FD6FB7-E91D-4958-A5B3-39AC408B5885}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HHScraperTesterImages", "..\HHScraperTesterImages\HHScraperTesterImages.csproj", "{4DF2C086-E126-4143-891E-55DFCB58C5EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F3FD6FB7-E91D-4958-A5B3-39AC408B5885}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3FD6FB7-E91D-4958-A5B3-39AC408B5885}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3FD6FB7-E91D-4958-A5B3-39AC408B5885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF2C086-E126-4143-891E-55DFCB58C5EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF2C086-E126-4143-891E-55DFCB58C5EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF2C086-E126-4143-891E-55DFCB58C5EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF2C086-E126-4143-891E-55DFCB58C5EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
