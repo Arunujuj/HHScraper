@@ -17,6 +17,20 @@ namespace HHScraper
             return doc;
         }
 
+        public List<string> GetTags()
+        {
+            List<string> tags = new List<string>();
+            string baseUrl = "https://hentaihaven.org/pick-your-poison/";
+            var doc = LoadHTMLSite(baseUrl);
+            var tagsElements = doc.DocumentNode.SelectNodes("//*[contains(@class,'tooltip-wrapper')]");
+            foreach (HtmlNode tag in tagsElements)
+            {
+                tags.Add(tag.InnerText);
+            }
+            return tags;
+        }
+
+
 
 
         public string GetHHDirectVideoURL(string baseVideoUrl)
