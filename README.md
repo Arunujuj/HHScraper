@@ -11,6 +11,7 @@ Fork the repository, Clone it to your system and you can start coding.
 Projects inside the .sln (Solution):
 - HHScraper (Core Library, does all the Scraping)
 - HentaiHavenContentDownloader (UI, which uses the Library)
+- When youre done, create a Pull Request back to the master
 
 ## Authors
 
