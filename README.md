@@ -11,11 +11,11 @@ An Application made with WPF which uses the Library to get the scraping done.
 - Fork the repository
 - Clone it to your system
 - Code
-<br/>
-Projects inside the .sln (Solution):
+
+## Solution / Projects
+
 - HHScraper (Core Library, does all the Scraping)
 - HentaiHavenContentDownloader (UI, which uses the Library)
-- When youre done, create a Pull Request back to the master
 
 ## Authors
 
