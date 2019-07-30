@@ -1,7 +1,7 @@
 # HentaiHavenContentDownloader
 
-Its a .NET Library which can Scrape Content from HentaiHaven
-A ContentDownloader Application made with WPF is the Library Test and the actual Product people can download from this repositories release
+Its a .NET Library which can Scrape Content from HentaiHaven.<br/>
+An Application made with WPF which uses the Library to get the scraping done.
 
 ![Current ContentDownloader Window](https://github.com/Arunujuj/HHScraper/blob/master/Screenshots/screen_1.png)
 
