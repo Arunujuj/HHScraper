@@ -7,6 +7,7 @@ Current features:
 - get all series
 - get series information
 - get series cover image
+- many more to come... (maybe even help out?)
 
 ![Current ContentDownloader Window](https://github.com/Arunujuj/HHScraper/blob/master/Screenshots/screen_1.png)
 (Should be safe for work right?)
