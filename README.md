@@ -7,7 +7,7 @@ An Application made with WPF which uses the Library to get the scraping done.
 
 ## Getting Started
 
-Join the discord for easy communication: https://discord.gg/JxV6WNJ
+Join the discord for easy communication: https://discord.gg/JxV6WNJ<br/>
 Fork the repository, Clone it to your system and you can start coding.
 Projects inside the .sln (Solution):
 - HHScraper (Core Library, does all the Scraping)
