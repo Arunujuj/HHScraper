@@ -9,4 +9,4 @@ Current features:
 - get series cover image
 
 ![Current ContentDownloader Window](https://github.com/Arunujuj/HHScraper/blob/master/Screenshots/screen_1.png)
-(Should be safe to work right?)
+(Should be safe for work right?)
