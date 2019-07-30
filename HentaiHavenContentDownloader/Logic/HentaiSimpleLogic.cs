@@ -1,5 +1,8 @@
 ﻿using HentaiHavenContentDownloader.DataContexts;
 using HHScraper;
+using HHScraper.Interface;
+using HHScraper.Models;
+using HHScraper.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,23 +18,21 @@ namespace HentaiHavenContentDownloader.Logic
     public class HentaiSimpleLogic
     {
         public ViewModel ViewModel;
-        private HentaiHavenScraper hentaiContent;
+        private IScraper scrapingContent;
         public HentaiSimpleLogic()
         {
-            hentaiContent = new HentaiHavenScraper();
+            scrapingContent = new HentaiHavenModule();
             ViewModel = new ViewModel();
         }
 
         public void GetTags()
         {
-            ViewModel.TAGS = new System.Collections.ObjectModel.ObservableCollection<string>(hentaiContent.GetTags());
+            ViewModel.TAGS = new System.Collections.ObjectModel.ObservableCollection<string>(scrapingContent.GetTags());
         }
 
-        public List<T> GetSeries(string tag)
+        public void GetSeries()
         {
-
-            hentaiContent.
-
+            ViewModel.SERIES = new System.Collections.ObjectModel.ObservableCollection<Series>(scrapingContent.GetSeriesList());
         }
 
     }
