@@ -1,4 +1,4 @@
-# HentaiHavenContentDownloader - HHCD - (repository name change will follow)
+# HentaiHavenContentDownloader
 
 Its a .NET Library which can Scrape Content from HentaiHaven
 A ContentDownloader Application made with WPF is the Library Test and the actual Product people can download from this repositories release
