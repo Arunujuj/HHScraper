@@ -66,10 +66,11 @@ namespace HHScraper.Modules
                 nextSeries.COVER_IMAGE_URL = seriesInfo.FirstChild.LastChild.FirstChild.GetAttributeValue("src", "no image :(").Replace("-150x150", "");
                 nextSeries.TAGS = new List<string>();
                 nextSeries.DESCRIPTION = seriesInfo.LastChild.LastChild.InnerText;
-                //foreach (var tag in tagNodes)
-                //{
-                //    nextSeries.TAGS.Add(tag.InnerText.Replace("    ", "")); <== why not work? haha, takes all tags of all series instead of the selected one lol...weird?! xd
-                //}
+                foreach (var tag in seriesInfo.LastChild.LastChild.ChildNodes)
+                {
+                    if(tag.OriginalName == "a")
+                        nextSeries.TAGS.Add(tag.InnerText.Replace("    ", ""));
+                }
                 nextSeries.EPISODES = new List<Episode>();
                 allSeries.Add(nextSeries);
             }
