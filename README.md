@@ -8,7 +8,7 @@ An Application made with WPF uses the Library to get the scraping done.
 ## Getting Started
 
 - Look through the Issues to see what you can work on
-- Join the discord for easy communication: https://discord.gg/JxV6WNJ
+- If you got a question or need help, join the discord: https://discord.gg/JxV6WNJ for easy communication
 - Fork the repository
 - Clone it to your system
 - Code
