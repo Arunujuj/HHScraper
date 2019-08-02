@@ -3,6 +3,7 @@ using HHScraper.Models;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,9 @@ namespace HentaiHavenContentDownloader
         public HentaiSimpleLogic hentaiLogic;
         private string selectedTag = "";
         private static string HomePathBase = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        private Series selectedSeries;
+        private Episode selectedEpisode;
         public MainWindow()
         {
             InitializeComponent();
@@ -38,9 +42,9 @@ namespace HentaiHavenContentDownloader
 
         private void InitCacheFolder()
         {
-            if(!System.IO.Directory.Exists(HomePathBase + @"\HHCD\"))
+            if(!System.IO.Directory.Exists(HomePathBase + @"\HACD\"))
             {
-                System.IO.Directory.CreateDirectory(HomePathBase + @"\HHCD\");
+                System.IO.Directory.CreateDirectory(HomePathBase + @"\HACD\");
                 RefreshTags();
                 hentaiLogic.GetSeries();
                 hentaiLogic.SaveCache(HomePathBase);
@@ -73,22 +77,59 @@ namespace HentaiHavenContentDownloader
 
         private void ComboBox_series_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            comboBox_episodes.Items.Clear();
+            episode_thumbnail.Source = null;
+            selectedSeries = null;
             int index = comboBox_series.SelectedIndex;
             var seriesList = hentaiLogic.ViewModel.SERIES.Where(x => x.TAGS.Contains(selectedTag)).ToList();
             if (index >= 0)
             {
-                Series selectedSeries = seriesList[index];
+                selectedSeries = seriesList[index];
                 label_name.Content = selectedSeries.NAME;
                 textBlock_desc.Text = selectedSeries.DESCRIPTION;
                 image_cover.Source = selectedSeries.CoverImage;
+                hentaiLogic.GetEpisodes(selectedSeries);
+                RefreshEpisodes();
             }
-            
+        }
+
+        private void RefreshEpisodes()
+        {
+            if (selectedSeries != null)
+            {
+                comboBox_episodes.Items.Clear();
+                for (int i = 0; i < selectedSeries.EPISODES.Count(); i++)
+                {
+                    comboBox_episodes.Items.Add("Video (" + (i+1).ToString() + ")");
+                }
+            }  
         }
 
         private void ComboBox_tags_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedTag = comboBox_tags.SelectedItem.ToString();
             RefreshSeries();
+        }
+
+        private void ComboBox_episodes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (selectedSeries != null)
+            {
+                int episodeIndex = comboBox_episodes.SelectedIndex;
+                if (episodeIndex >= 0)
+                {
+                    Episode selectedEpisode = selectedSeries.EPISODES[episodeIndex];
+                    episode_thumbnail.Source = selectedEpisode.ThumbnailImage;
+                }
+            }
+        }
+
+        private void Image_cover_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(selectedSeries != null)
+            {
+                Process.Start(selectedSeries.DIRECTURL);
+            }
         }
     }
 }

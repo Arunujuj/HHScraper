@@ -39,6 +39,11 @@ namespace HentaiHavenContentDownloader.Logic
             ViewModel.SERIES = new System.Collections.ObjectModel.ObservableCollection<Series>(scrapingContent.GetSeriesList());
         }
 
+        public void GetEpisodes(Series series)
+        {
+            ViewModel.SERIES.Where(x => x == series).FirstOrDefault().EPISODES = scrapingContent.GetEpisodes(series);
+        }
+
         public void LoadCache(string homePath)
         {
             ViewModel.TAGS = DeSerializeObject<ObservableCollection<string>>(homePath + @"\HHCD\tags.cache");
@@ -49,6 +54,11 @@ namespace HentaiHavenContentDownloader.Logic
         {
             SerializeObject<ObservableCollection<string>>(ViewModel.TAGS, homePath + @"\HHCD\tags.cache");
             SerializeObject<ObservableCollection<Series>>(ViewModel.SERIES, homePath + @"\HHCD\series.cache");
+        }
+
+        public string GetVideoThumbnailURL(string directVideo)
+        {
+            return scrapingContent.GetVideoThumbnailURL(directVideo);
         }
 
         /// <summary>

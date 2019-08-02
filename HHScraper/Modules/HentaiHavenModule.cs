@@ -15,6 +15,9 @@ namespace HHScraper.Modules
         #region HentaiHaven specific privates
         private string baseUrl = "https://hentaihaven.org";
         private Random rnd = new Random();
+
+
+
         private HtmlDocument LoadHTMLSite(string url)
         {
             var doc = new HtmlDocument();
@@ -96,9 +99,42 @@ namespace HHScraper.Modules
             var doc = LoadHTMLSite(videoUrl);
             foreach (HtmlNode metaTag in doc.DocumentNode.Descendants("video"))
             {
-                thumbnailURL = metaTag.GetAttributeValue("poster", "-");
+                thumbnailURL = metaTag.GetAttributeValue("poster", "noPoster");
             }
             return thumbnailURL;
+        }
+
+        public string GetDirectVideoDownload(string videoUrl)
+        {
+            string thumbnailURL = "";
+            var doc = LoadHTMLSite(videoUrl);
+            foreach (HtmlNode metaTag in doc.DocumentNode.Descendants("video"))
+            {
+                thumbnailURL = metaTag.ChildNodes[1].GetAttributeValue("src", "noDownload");
+            }
+            return thumbnailURL;
+        }
+
+        public List<Episode> GetEpisodes(Series series)
+        {
+            List<Episode> episodes = new List<Episode>();
+            string episodeListUrl = series.DIRECTURL;
+            var doc = LoadHTMLSite(episodeListUrl);
+            var list = doc.DocumentNode.SelectNodes("//*[contains(@class,'thumbnail-image')]");
+            if(list != null)
+            {
+                for (int i = 0; i < list.Count(); i++)
+                {
+                    Episode newEpisode = new Episode();
+                    newEpisode.DIRECT_URL = list[i].GetAttributeValue("href", "noDirectUrl");
+                    newEpisode.THUMBNAIL_URL = list[i].ChildNodes[1].GetAttributeValue("data-src", "noThumbnail");
+                    newEpisode.DirectDownloadMp4 = GetDirectVideoDownload(newEpisode.DIRECT_URL);
+
+                    episodes.Add(newEpisode);
+                }
+            }
+            
+            return episodes;
         }
     }
 }

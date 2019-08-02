@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HentaiHavenContentDownloader"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="HentaiHavenContentDownloader" Height="450" Width="800">
+        Title="HentaiHavenContentDownloader" Height="550" Width="800">
     <Grid x:Name="masterGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -14,11 +14,16 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" Grid.Column="0" Margin="10,10,0,0">
             <ComboBox x:Name="comboBox_tags" SelectionChanged="ComboBox_tags_SelectionChanged"/>
+            <Button Name="btn_refreshTags" ToolTip="Requests the tags again" Content="Refresh Tags"/>
             <ComboBox x:Name="comboBox_series" SelectionChanged="ComboBox_series_SelectionChanged"/>
+            <Button Name="btn_refreshSeries" ToolTip="Requests the series again" Content="Refresh Series"/>
             <Label x:Name="label_name" Height="32" FontSize="11" VerticalAlignment="Center"/>
-            <Image x:Name="image_cover" Width="400" Height="400"/>
+            <Image x:Name="image_cover" Width="250" Height="250" MouseLeftButtonDown="Image_cover_MouseLeftButtonDown"/>
             <TextBlock x:Name="textBlock_desc" Height="32" FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"/>
-            
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,10,0,0">
+            <ComboBox x:Name="comboBox_episodes" SelectionChanged="ComboBox_episodes_SelectionChanged"/>
+            <Image x:Name="episode_thumbnail" Width="250" Height="250"/>
         </StackPanel>
     </Grid>
 </Controls:MetroWindow>

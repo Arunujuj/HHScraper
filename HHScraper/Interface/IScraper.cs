@@ -11,6 +11,8 @@ namespace HHScraper.Interface
     {
         List<string> GetTags();
         List<Series> GetSeriesList();
+        List<Episode> GetEpisodes(Series series);
         string GetVideoThumbnailURL(string videoUrl);
+        string GetDirectVideoDownload(string videoUrl);
     }
 }
