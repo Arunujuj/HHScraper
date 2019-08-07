@@ -126,6 +126,7 @@ namespace HHScraper.Modules
                 for (int i = 0; i < list.Count(); i++)
                 {
                     Episode newEpisode = new Episode();
+                    newEpisode.IndexCount = i + 1;
                     newEpisode.DIRECT_URL = list[i].GetAttributeValue("href", "noDirectUrl");
                     newEpisode.THUMBNAIL_URL = list[i].ChildNodes[1].GetAttributeValue("data-src", "noThumbnail");
                     newEpisode.DirectDownloadMp4 = GetDirectVideoDownload(newEpisode.DIRECT_URL);

@@ -34,5 +34,7 @@ namespace HHScraper.Models
                 return bitmap;
             }
         }
+
+        public int IndexCount { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -53,8 +54,13 @@ namespace HentaiHavenContentDownloader
 
         private Episode GetSelectedEpisode()
         {
-            Episode selectedEpisode = new Episode();
-
+            Episode selectedEpisode = null;
+            int episodeIndex = comboBox_episodes.SelectedIndex;
+            if (episodeIndex >= 0)
+            {
+                selectedEpisode = GetSelectedSeries().EPISODES[episodeIndex];
+                episode_thumbnail.Source = selectedEpisode.ThumbnailImage;
+            }
             return selectedEpisode;
         }
 
@@ -126,7 +132,7 @@ namespace HentaiHavenContentDownloader
                 comboBox_episodes.Items.Clear();
                 for (int i = 0; i < GetSelectedSeries().EPISODES.Count(); i++)
                 {
-                    comboBox_episodes.Items.Add("Episode (" + (i+1).ToString() + ")");
+                    comboBox_episodes.Items.Add("Episode (" + (GetSelectedSeries().EPISODES[i].IndexCount).ToString() + ")");
                 }
             }  
         }
@@ -141,10 +147,9 @@ namespace HentaiHavenContentDownloader
         {
             if (GetSelectedSeries() != null)
             {
-                int episodeIndex = comboBox_episodes.SelectedIndex;
-                if (episodeIndex >= 0)
+                Episode selectedEpisode = GetSelectedEpisode();
+                if(selectedEpisode != null)
                 {
-                    Episode selectedEpisode = GetSelectedSeries().EPISODES[episodeIndex];
                     episode_thumbnail.Source = selectedEpisode.ThumbnailImage;
                 }
             }
@@ -160,6 +165,8 @@ namespace HentaiHavenContentDownloader
 
         private void InitSeriesDownloadLoaction(string name)
         {
+            name = name.Replace(":", "");
+
             if(!System.IO.Directory.Exists(HomePathBase + @"\HHCD\Series\" + name))
             {
                 System.IO.Directory.CreateDirectory(HomePathBase + @"\HHCD\Series\" + name);
@@ -169,9 +176,42 @@ namespace HentaiHavenContentDownloader
 
         private void Btn_downloadCover_Click(object sender, RoutedEventArgs e)
         {
-            InitSeriesDownloadLoaction(GetSelectedSeries().NAME);
-            string seriesLocation = HomePathBase + @"\HHCD\Series\" + GetSelectedSeries().NAME;
+            string name = GetSelectedSeries().NAME;
+            name = name.Replace(":", "");
+            InitSeriesDownloadLoaction(name);
+
+            string seriesLocation = HomePathBase + @"\HHCD\Series\" + name;
             HHScraper.Tools.SaveImage(GetSelectedSeries().COVER_IMAGE_URL, ImageFormat.Png, seriesLocation + @"\cover.png");
+        }
+
+        private void Btn_downloadSeriesInfo_Click(object sender, RoutedEventArgs e)
+        {
+            string name = GetSelectedSeries().NAME;
+            name = name.Replace(":", "");
+            InitSeriesDownloadLoaction(name);
+
+            string seriesLocation = HomePathBase + @"\HHCD\Series\" + name;
+            System.IO.File.WriteAllText(seriesLocation + @"\info.txt", GetSelectedSeries().DESCRIPTION);
+
+        }
+
+        private void Btn_downloadEpisode_Click(object sender, RoutedEventArgs e)
+        {
+            string name = GetSelectedSeries().NAME;
+            name = name.Replace(":", "");
+            InitSeriesDownloadLoaction(name);
+
+            string episodeLocation = HomePathBase + @"\HHCD\Series\" + name + @"\episodes\";
+
+
+
+            using (var client = new WebClient())
+            {
+                client.DownloadFile(GetSelectedEpisode().DirectDownloadMp4, episodeLocation + @"\episode_" + GetSelectedEpisode().IndexCount + ".mp4");
+            }
+
+
+
         }
     }
 }

@@ -21,10 +21,12 @@
             <Image x:Name="image_cover" Width="250" Height="250" MouseLeftButtonDown="Image_cover_MouseLeftButtonDown"/>
             <TextBlock x:Name="textBlock_desc" Height="32" FontSize="11" TextWrapping="Wrap" VerticalAlignment="Center"/>
             <Button x:Name="btn_downloadCover" Click="Btn_downloadCover_Click" Content="Download Cover Image"/>
+            <Button x:Name="btn_downloadSeriesInfo" Click="Btn_downloadSeriesInfo_Click" Content="Download Series Info"/>
         </StackPanel>
         <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,10,0,0">
             <ComboBox x:Name="comboBox_episodes" SelectionChanged="ComboBox_episodes_SelectionChanged"/>
             <Image x:Name="episode_thumbnail" Width="250" Height="250"/>
+            <Button x:Name="btn_downloadEpisode" Content="Download selected Episode" Click="Btn_downloadEpisode_Click" />
         </StackPanel>
     </Grid>
 </Controls:MetroWindow>
