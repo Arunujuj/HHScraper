@@ -210,6 +210,7 @@ namespace HentaiHavenContentDownloader
                 client.DownloadFile(GetSelectedEpisode().DirectDownloadMp4, episodeLocation + @"\episode_" + GetSelectedEpisode().IndexCount + ".mp4");
             }
 
+            MessageBox.Show("Successfully downloaded Episode!");
 
 
         }
