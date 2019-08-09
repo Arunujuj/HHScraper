@@ -5,6 +5,8 @@ An Application made with WPF uses the Library to show the content.
 
 ![Current ContentDownloader Window](https://github.com/Arunujuj/HHScraper/blob/master/Screenshots/screen_5.png)
 
+Download latest release build here: https://github.com/Arunujuj/HentaiHavenContentDownloader/releases
+
 ## Getting Started
 
 - Look through the Issues to see what you can work on
