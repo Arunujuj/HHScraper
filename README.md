@@ -23,7 +23,7 @@ Download latest release build here: https://github.com/Arunujuj/HentaiHavenConte
 ## Authors
 
 * **Arunujuj** - *Initial work* - [Arunujuj](https://github.com/Arunujuj)
-
+* **k0rdesii** - *Maintainer* - Repository transfered
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details
