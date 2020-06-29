@@ -10,7 +10,6 @@ Download latest release build here: https://github.com/Arunujuj/HentaiHavenConte
 ## Getting Started
 
 - Look through the Issues to see what you can work on
-- If you got a question or need help, join the discord: https://discord.gg/4GaD3Gm for easy communication
 - Fork the repository
 - Clone it to your system
 - Code
