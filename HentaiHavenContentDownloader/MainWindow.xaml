@@ -27,6 +27,7 @@
             <ComboBox x:Name="comboBox_episodes" SelectionChanged="ComboBox_episodes_SelectionChanged"/>
             <Image x:Name="episode_thumbnail" Width="250" Height="250"/>
             <Button x:Name="btn_downloadEpisode" Content="Download selected Episode" Click="Btn_downloadEpisode_Click" />
+            <MediaElement x:Name="videoPlayer" LoadedBehavior="Manual" UnloadedBehavior="Manual"/>
         </StackPanel>
     </Grid>
 </Controls:MetroWindow>

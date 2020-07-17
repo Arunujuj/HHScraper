@@ -12,13 +12,13 @@ namespace HentaiHavenContentDownloader.DataContexts
 {
     public class ViewModel
     {
-        private ObservableCollection<string> tags = new ObservableCollection<string>();
+        private ObservableCollection<Tag> tags = new ObservableCollection<Tag>();
         private ObservableCollection<Series> series = new ObservableCollection<Series>();
         private Series selectedSeries = new Series();
         private BitmapImage selectedImage = new BitmapImage();
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ObservableCollection<string> TAGS
+        public ObservableCollection<Tag> TAGS
         {
             get
             {

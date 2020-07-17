@@ -22,7 +22,7 @@ namespace HHScraper.Models
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                if(COVER_IMAGE_URL != null && COVER_IMAGE_URL.StartsWith("https://hentaihaven.org/"))
+                if(COVER_IMAGE_URL != null && COVER_IMAGE_URL.StartsWith("https://hentaihaven.xxx/"))
                 {
                     bitmap.UriSource = new Uri(COVER_IMAGE_URL, UriKind.Absolute);
                 }

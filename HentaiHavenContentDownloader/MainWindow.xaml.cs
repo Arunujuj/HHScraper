@@ -27,7 +27,7 @@ namespace HentaiHavenContentDownloader
     public partial class MainWindow
     {
         public HentaiSimpleLogic hentaiLogic;
-        private string selectedTag = "";
+        private Tag selectedTag;
         private static string HomePathBase = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         public MainWindow()
         {
@@ -44,7 +44,7 @@ namespace HentaiHavenContentDownloader
         {
             Series selectedSeries = null;
             int index = comboBox_series.SelectedIndex;
-            var seriesList = hentaiLogic.ViewModel.SERIES.Where(x => x.TAGS.Contains(selectedTag)).ToList();
+            var seriesList = hentaiLogic.ViewModel.SERIES;
             if (index >= 0)
             {
                 selectedSeries = seriesList[index];
@@ -82,7 +82,7 @@ namespace HentaiHavenContentDownloader
             {
                 System.IO.Directory.CreateDirectory(HomePathBase + @"\HHCD\");
                 RefreshTags();
-                hentaiLogic.GetSeries();
+                //hentaiLogic.GetSeries();
                 hentaiLogic.SaveCache(HomePathBase);
             }
             else
@@ -93,8 +93,10 @@ namespace HentaiHavenContentDownloader
 
         private void RefreshSeries()
         {
+            hentaiLogic.GetSeries();
+
             comboBox_series.Items.Clear();
-            var seriesList = hentaiLogic.ViewModel.SERIES.Where(x => x.TAGS.Contains(selectedTag));
+            var seriesList = hentaiLogic.ViewModel.SERIES;
             foreach (var series in seriesList)
             {
                 comboBox_series.Items.Add(series.NAME);
@@ -107,7 +109,7 @@ namespace HentaiHavenContentDownloader
             hentaiLogic.GetTags();
             foreach(var tag in hentaiLogic.ViewModel.TAGS)
             {
-                comboBox_tags.Items.Add(tag.ToString());
+                comboBox_tags.Items.Add(tag.TAG_NAME);
             }
         }
 
@@ -127,6 +129,11 @@ namespace HentaiHavenContentDownloader
 
         private void RefreshEpisodes()
         {
+            // gather episode data
+
+
+
+
             if (GetSelectedSeries() != null)
             {
                 comboBox_episodes.Items.Clear();
@@ -139,7 +146,7 @@ namespace HentaiHavenContentDownloader
 
         private void ComboBox_tags_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedTag = comboBox_tags.SelectedItem.ToString();
+            hentaiLogic.selectedTag = hentaiLogic.ViewModel.TAGS.Where(x => x.TAG_NAME == comboBox_tags.SelectedItem.ToString()).FirstOrDefault();
             RefreshSeries();
         }
 
@@ -151,6 +158,10 @@ namespace HentaiHavenContentDownloader
                 if(selectedEpisode != null)
                 {
                     episode_thumbnail.Source = selectedEpisode.ThumbnailImage;
+
+                    videoPlayer.Source = new Uri(selectedEpisode.DirectDownloadMp4.ToString(), UriKind.RelativeOrAbsolute);
+                    videoPlayer.Play();
+
                 }
             }
         }

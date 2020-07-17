@@ -13,7 +13,7 @@ namespace HHScraper.Modules
     public class HentaiHavenModule : IScraper
     {
         #region HentaiHaven specific privates
-        private string baseUrl = "https://hentaihaven.org";
+        private string baseUrl = "https://hentaihaven.xxx";
         private Random rnd = new Random();
 
 
@@ -46,49 +46,105 @@ namespace HHScraper.Modules
 
         #endregion
 
-        public List<Series> GetSeriesList()
+        public List<Series> GetSeriesList(Tag selectedTag)
         {
+            string mainPage = selectedTag.TAG_URL;
+
             List<Series> allSeries = new List<Series>();
-            string url = baseUrl + "/pick-your-series/";
+            string url = mainPage + "/page/1";
             var doc = LoadHTMLSite(url);
-            var Seriesnodes = doc.DocumentNode.SelectNodes("//*[contains(@class,'cat_section')]");
-            foreach (HtmlNode series in Seriesnodes)
+
+            var lastButton = doc.DocumentNode.SelectSingleNode("//*[contains(@class,'last')]");
+
+            var lastPageIndexButton = lastButton.GetAttributeValue("href", "no last page?");
+
+            string[] lastPageSplit = lastPageIndexButton.Split('/');
+
+            // ex => : hentaiheaven.xxx/series/milf/page/2/
+            //                                           ^^ length
+            //                                           page index -2 zero based
+            int maxPage = Convert.ToInt32(lastPageSplit[lastPageSplit.Length - 2]);
+
+            for(int pageNumber = 1; pageNumber <= maxPage; pageNumber++)
             {
-                int waitTime = rnd.Next(400, 1000);
-                Thread.Sleep(waitTime);
-                // name
-                HtmlNode seriesMain = series.FirstChild;
+                string pageUrl = mainPage + "/page/" + pageNumber;
+                var pageDoc = LoadHTMLSite(pageUrl);
 
-                HtmlNode seriesInfo = series.LastChild;
+                var seriesFromPage = pageDoc.DocumentNode.SelectNodes("//div[contains(@class,'page-item-detail')]");
 
-
-                Series nextSeries = new Series();
-                nextSeries.DIRECTURL = seriesMain.GetAttributeValue("href", "no direct :/");
-                nextSeries.NAME = seriesMain.InnerHtml;
-                nextSeries.AIRED = GetAiredDate(seriesInfo.InnerHtml);
-                nextSeries.COVER_IMAGE_URL = seriesInfo.FirstChild.LastChild.FirstChild.GetAttributeValue("src", "no image :(").Replace("-150x150", "");
-                nextSeries.TAGS = new List<string>();
-                nextSeries.DESCRIPTION = seriesInfo.LastChild.LastChild.InnerText;
-                foreach (var tag in seriesInfo.LastChild.LastChild.ChildNodes)
+                foreach(var seriesBadge in seriesFromPage)
                 {
-                    if(tag.OriginalName == "a")
-                        nextSeries.TAGS.Add(tag.InnerText.Replace("    ", ""));
+                    Series nextSeries = new Series();
+                    nextSeries.NAME = seriesBadge.ChildNodes[1].ChildNodes[1].GetAttributeValue("title", "no name found");
+                    nextSeries.COVER_IMAGE_URL = seriesBadge.ChildNodes[1].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "no cover url found"); // remove resolution and the - to get the full hd picture
+                    nextSeries.DIRECTURL = seriesBadge.ChildNodes[1].ChildNodes[1].GetAttributeValue("href", "no name directurl");
+                    allSeries.Add(nextSeries);
                 }
-                nextSeries.EPISODES = new List<Episode>();
-                allSeries.Add(nextSeries);
+
+                
+
             }
+
+            // get page number
+            // go over every page
+            // get every series
+            // collect information if possible
+
+
+
+
+
+
+
+
+
+
+            //string url = baseUrl + "/pick-your-series/";
+            //var doc = LoadHTMLSite(url);
+            //var Seriesnodes = doc.DocumentNode.SelectNodes("//*[contains(@class,'cat_section')]");
+            //foreach (HtmlNode series in Seriesnodes)
+            //{
+            //    int waitTime = rnd.Next(400, 1000);
+            //    Thread.Sleep(waitTime);
+            //    // name
+            //    HtmlNode seriesMain = series.FirstChild;
+
+            //    HtmlNode seriesInfo = series.LastChild;
+
+
+            //    Series nextSeries = new Series();
+            //    nextSeries.DIRECTURL = seriesMain.GetAttributeValue("href", "no direct :/");
+            //    nextSeries.NAME = seriesMain.InnerHtml;
+            //    nextSeries.AIRED = GetAiredDate(seriesInfo.InnerHtml);
+            //    nextSeries.COVER_IMAGE_URL = seriesInfo.FirstChild.LastChild.FirstChild.GetAttributeValue("src", "no image :(").Replace("-150x150", "");
+            //    nextSeries.TAGS = new List<string>();
+            //    nextSeries.DESCRIPTION = seriesInfo.LastChild.LastChild.InnerText;
+            //    foreach (var tag in seriesInfo.LastChild.LastChild.ChildNodes)
+            //    {
+            //        if(tag.OriginalName == "a")
+            //            nextSeries.TAGS.Add(tag.InnerText.Replace("    ", ""));
+            //    }
+            //    nextSeries.EPISODES = new List<Episode>();
+            //    allSeries.Add(nextSeries);
+            //}
             return allSeries;
         }
 
-        public List<string> GetTags()
+        public List<Tag> GetTags()
         {
-            List<string> tags = new List<string>();
-            string baseUrl = "https://hentaihaven.org/pick-your-poison/";
+            List<Tag> tags = new List<Tag>();
             var doc = LoadHTMLSite(baseUrl);
-            var tagsElements = doc.DocumentNode.SelectNodes("//*[contains(@class,'tooltip-wrapper')]");
-            foreach (HtmlNode tag in tagsElements)
+            var tagsElements = doc.DocumentNode.SelectNodes("//*[contains(@class,'tagcloud')]")[0];
+
+            foreach(var tagElement in tagsElements.ChildNodes)
             {
-                tags.Add(tag.InnerText);
+                if(tagElement.Name != "#text")
+                {
+                    Tag nextTag = new Tag();
+                    nextTag.TAG_NAME = tagElement.InnerHtml;
+                    nextTag.TAG_URL = tagElement.Attributes["href"].Value.ToString();
+                    tags.Add(nextTag);
+                }
             }
             return tags;
         }

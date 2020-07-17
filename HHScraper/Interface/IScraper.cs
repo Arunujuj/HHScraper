@@ -9,8 +9,8 @@ namespace HHScraper.Interface
 {
     public interface IScraper
     {
-        List<string> GetTags();
-        List<Series> GetSeriesList();
+        List<Tag> GetTags();
+        List<Series> GetSeriesList(Tag selectedTag);
         List<Episode> GetEpisodes(Series series);
         string GetVideoThumbnailURL(string videoUrl);
         string GetDirectVideoDownload(string videoUrl);

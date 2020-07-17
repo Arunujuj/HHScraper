@@ -21,6 +21,8 @@ namespace HentaiHavenContentDownloader.Logic
     // every task in here is managed "in house"
     public class HentaiSimpleLogic
     {
+        public Tag selectedTag = new Tag();
+
         public ViewModel ViewModel;
         private IScraper scrapingContent;
         public HentaiSimpleLogic()
@@ -31,12 +33,12 @@ namespace HentaiHavenContentDownloader.Logic
 
         public void GetTags()
         {
-            ViewModel.TAGS = new System.Collections.ObjectModel.ObservableCollection<string>(scrapingContent.GetTags());
+            ViewModel.TAGS = new System.Collections.ObjectModel.ObservableCollection<Tag>(scrapingContent.GetTags());
         }
 
         public void GetSeries()
         {
-            ViewModel.SERIES = new System.Collections.ObjectModel.ObservableCollection<Series>(scrapingContent.GetSeriesList());
+            ViewModel.SERIES = new System.Collections.ObjectModel.ObservableCollection<Series>(scrapingContent.GetSeriesList(selectedTag));
         }
 
         public void GetEpisodes(Series series)
@@ -46,13 +48,13 @@ namespace HentaiHavenContentDownloader.Logic
 
         public void LoadCache(string homePath)
         {
-            ViewModel.TAGS = DeSerializeObject<ObservableCollection<string>>(homePath + @"\HHCD\tags.cache");
+            ViewModel.TAGS = DeSerializeObject<ObservableCollection<Tag>>(homePath + @"\HHCD\tags.cache");
             ViewModel.SERIES = DeSerializeObject<ObservableCollection<Series>>(homePath + @"\HHCD\series.cache");
         }
 
         public void SaveCache(string homePath)
         {
-            SerializeObject<ObservableCollection<string>>(ViewModel.TAGS, homePath + @"\HHCD\tags.cache");
+            SerializeObject<ObservableCollection<Tag>>(ViewModel.TAGS, homePath + @"\HHCD\tags.cache");
             SerializeObject<ObservableCollection<Series>>(ViewModel.SERIES, homePath + @"\HHCD\series.cache");
         }
 
