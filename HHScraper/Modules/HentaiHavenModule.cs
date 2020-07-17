@@ -56,14 +56,29 @@ namespace HHScraper.Modules
 
             var lastButton = doc.DocumentNode.SelectSingleNode("//*[contains(@class,'last')]");
 
-            var lastPageIndexButton = lastButton.GetAttributeValue("href", "no last page?");
+            string lastPageIndexButton = "";
 
-            string[] lastPageSplit = lastPageIndexButton.Split('/');
+            if(lastButton != null)
+            {
+                lastPageIndexButton = lastButton.GetAttributeValue("href", "no last page?");
 
-            // ex => : hentaiheaven.xxx/series/milf/page/2/
-            //                                           ^^ length
-            //                                           page index -2 zero based
-            int maxPage = Convert.ToInt32(lastPageSplit[lastPageSplit.Length - 2]);
+                if (lastPageIndexButton == "no last page?")
+                {
+                    lastButton = doc.DocumentNode.SelectSingleNode("//*[contains(@class,'nextpostslink')]");
+                    lastPageIndexButton = lastButton.GetAttributeValue("href", "no next post?");
+                }
+            }
+
+            
+
+            int maxPage = 1;
+            string[] lastPageSplit;
+
+            if(lastPageIndexButton != "no next post?" && lastPageIndexButton != string.Empty)
+            {
+                lastPageSplit = lastPageIndexButton.Split('/');
+                maxPage = Convert.ToInt32(lastPageSplit[lastPageSplit.Length - 2]);
+            }
 
             for(int pageNumber = 1; pageNumber <= maxPage; pageNumber++)
             {
@@ -76,7 +91,18 @@ namespace HHScraper.Modules
                 {
                     Series nextSeries = new Series();
                     nextSeries.NAME = seriesBadge.ChildNodes[1].ChildNodes[1].GetAttributeValue("title", "no name found");
-                    nextSeries.COVER_IMAGE_URL = seriesBadge.ChildNodes[1].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "no cover url found"); // remove resolution and the - to get the full hd picture
+                    nextSeries.COVER_IMAGE_URL = ""; // remove resolution and the - to get the full hd picture
+
+                    // get full size cover image => by removing the resolution in the url
+                    // ex: https://hentaihaven.xxx/www/2020/01/Doctor-Shameless-Nurse-Hentai-uncensored-175x238.jpg
+
+                    string coverURLTiny = seriesBadge.ChildNodes[1].ChildNodes[1].ChildNodes[1].GetAttributeValue("src", "no cover url found");
+
+                    string ext = coverURLTiny.Substring(coverURLTiny.Length - 4, 4);
+
+                    coverURLTiny = coverURLTiny.Substring(0, coverURLTiny.Length - 12);
+                    nextSeries.COVER_IMAGE_URL = coverURLTiny + ext;
+
                     nextSeries.DIRECTURL = seriesBadge.ChildNodes[1].ChildNodes[1].GetAttributeValue("href", "no name directurl");
                     allSeries.Add(nextSeries);
                 }
